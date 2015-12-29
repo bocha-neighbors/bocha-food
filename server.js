@@ -12,11 +12,16 @@ app.get('/', function(request, response) {
   response.send('Hey, world!')
 })
 
-app.get('/catalog', function(request, response) {
+app.get('/items', function(request, response) {
   Items().select()
   .then(function(results) {
-    console.log(results)
-    response.json(results)
+    var jsonResponse = {}
+    jsonResponse.links =
+      {
+        "self": "http://somehost.com/items"
+      }
+    jsonResponse.data = results
+    response.json(jsonResponse)
   })
 })
 
