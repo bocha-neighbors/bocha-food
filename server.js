@@ -82,6 +82,16 @@ app.put('/items/:id', function(request, response) {
   })
 })
 
+app.delete('/items/:id', function(request, response) {
+  Items().where('id', request.params.id).del()
+  .then(function(results) {
+    var jsonResponse = {}
+    jsonResponse.links = { "self": "http://somehost.com/items" }
+    jsonResponse.data = results
+    response.json(jsonResponse)
+  })
+})
+
 app.listen(8080, function() {
   console.log('Listening on 8080...')
 })
