@@ -29,7 +29,8 @@ router.get('/:id', function(request, response) {
 
 router.post('/', function(request, response) {
   Users().insert({
-    
+    username: request.body.username,
+    password: request.body.password
   }, 'id')
   .then(function(results) {
     var jsonResponse = {}
