@@ -16,10 +16,18 @@ app.get('/items', function(request, response) {
   Items().select()
   .then(function(results) {
     var jsonResponse = {}
-    jsonResponse.links =
-      {
-        "self": "http://somehost.com/items"
-      }
+    jsonResponse.links = { "self": "http://somehost.com/items" }
+    jsonResponse.data = results
+    response.json(jsonResponse)
+  })
+})
+
+app.get('/items/:id', function(request, response) {
+  Items().select()
+  .where('id', request.params.id).first()
+  .then(function(results) {
+    var jsonResponse = {}
+    jsonResponse.links = { "self": "http://somehost.com/items" }
     jsonResponse.data = results
     response.json(jsonResponse)
   })
