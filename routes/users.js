@@ -27,19 +27,6 @@ router.get('/:id', function(request, response) {
   })
 })
 
-router.post('/', function(request, response) {
-  Users().insert({
-    username: request.body.username,
-    password: request.body.password
-  }, 'id')
-  .then(function(results) {
-    var jsonResponse = {}
-    jsonResponse.links = { "self": "http://somehost.com/users" }
-    jsonResponse.data = results
-    response.json(jsonResponse)
-  })
-})
-
 router.put('/:id', function(request, response) {
   Users().where('id', request.params.id).update({
 
