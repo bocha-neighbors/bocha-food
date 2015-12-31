@@ -17,13 +17,15 @@ router.post('/signup', function(request, response, next) {
         password: hash
       }, 'id')
       .then(function(id) {
-        response.cookie('userID', id[0], { signed: true })
-        response.send('Successfully logged in.')
+        request.session.regenerate(function() {
+          request.session.user = id[0]
+          response.send('Successfully logged in.')
+        })
       })
     }
     else {
       response.status(409)
-      response.redirect('You have already signed up. Please login.')
+      response.send('You have already signed up. Please login.')
     }
   })
 })
@@ -40,8 +42,6 @@ router.post('/login', function(request, response) {
           request.session.user = user.id
           response.send('Successfully logged in.')
         })
-        // response.cookie('userID', user.id, { signed: true })
-        // response.send('Successfully logged in.')
       }
       else {
         response.send('User found, but password is incorrect.')
