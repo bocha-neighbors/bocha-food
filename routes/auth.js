@@ -36,8 +36,12 @@ router.post('/login', function(request, response) {
   .then(function(user) {
     if (user) {
       if (bcrypt.compareSync(request.body.password, user.password)) {
-        response.cookie('userID', user.id, { signed: true })
-        response.send('Successfully logged in.')
+        request.session.regenerate(function() {
+          request.session.user = user.id
+          response.send('Successfully logged in.')
+        })
+        // response.cookie('userID', user.id, { signed: true })
+        // response.send('Successfully logged in.')
       }
       else {
         response.send('User found, but password is incorrect.')
@@ -50,8 +54,9 @@ router.post('/login', function(request, response) {
 })
 
 router.get('/signout', function(request, response) {
-  response.clearCookie('userID')
-  response.send('Signed out.')
+  request.session.destroy(function() {
+    response.send('Signed out.')
+  })
 })
 
 module.exports = router
