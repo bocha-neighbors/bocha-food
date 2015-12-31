@@ -11,7 +11,9 @@ var app = Express()
 // express-session configuration
 var sess = {
   secret: 'keyboard kitty cat',
-  cookie: {}
+  cookie: {},
+  saveUninitialized: false,
+  resave: false
 }
 
 require('dotenv').load()
