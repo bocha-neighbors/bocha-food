@@ -49,4 +49,9 @@ router.post('/login', function(request, response) {
   })
 })
 
+router.get('/signout', function(request, response) {
+  response.clearCookie('userID')
+  response.send('Signed out.')
+})
+
 module.exports = router
