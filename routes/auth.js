@@ -31,12 +31,15 @@ router.post('/signup', function(request, response, next) {
 })
 
 router.post('/login', function(request, response) {
+  console.log(request.body)
+  var passwordPresent = !!request.body.password // Do I need to check for presence of username as well?
   Users()
   .where({
     username: request.body.username
   }).first()
   .then(function(user) {
-    if (user) {
+    console.log(user)
+    if (user && passwordPresent) {
       if (bcrypt.compareSync(request.body.password, user.password)) {
         request.session.regenerate(function() {
           request.session.user = user.id
