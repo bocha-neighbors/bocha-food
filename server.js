@@ -2,6 +2,7 @@ var Express = require('express')
 var knex = require('./db/knex')
 var bodyParser = require('body-parser')
 var session = require('express-session')
+var cors = require('cors')
 
 var items = require('./routes/items')
 var users = require('./routes/users')
@@ -18,11 +19,13 @@ var sess = {
 
 require('dotenv').load()
 
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session(sess))
 
 // Only allow signed-in users to see this section
 app.use('/api/v1/', function(req, res, next) {
+  console.log('user session:', req.session.user)
   if (req.session.user) {
     next()
   }
