@@ -19,13 +19,13 @@ var sess = {
 
 require('dotenv').load()
 
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:3030' }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session(sess))
 
 // Only allow signed-in users to see this section
 app.use('/api/v1/', function(req, res, next) {
-  console.log('user session:', req.session.user)
+  console.log('===========user session:', req.session)
   if (req.session.user) {
     next()
   }
